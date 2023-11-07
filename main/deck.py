@@ -24,17 +24,15 @@ cards = {
     "Fool":"https://i.imgur.com/rhwhV5L.jpeg",
     "Jester":"https://i.imgur.com/iR8kFV6.jpeg"
 }
+
 discard_pile = {}
 
 def deckear():
     if not cards:
-        return "No quedan cartas en el mazo."
-
+        return False
     random_card_name = random.choice(list(cards.keys()))
     random_card_link = cards[random_card_name]
-
     if (random_card_name != "Fool" and random_card_name != "Jester"):
-
         discard_pile[random_card_name] = random_card_link
         del cards[random_card_name]
         print(f'{random_card_name} deleted')
@@ -42,13 +40,12 @@ def deckear():
         print(f'{random_card_name} not deleted')
 
 
-    return f"{random_card_name} {random_card_link}"
+    return f"{random_card_name}"
 
 def discardDeck():
     if not discard_pile:
-        return 'No hay cartas descartadas.'
-
+        return False
     random_card_name = random.choice(list(discard_pile.keys()))
     random_card_link =discard_pile[random_card_name]
 
-    return f"{random_card_name} {random_card_link}"
+    return f"{random_card_name}"

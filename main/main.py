@@ -8,17 +8,28 @@ import deck
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
+IMG_RUTE =os.getenv('IMG_RUTE')
 bot = EasyBot()
 
 @bot.event
 async def on_message(message):
     if message.content == '!robar':
-        print("Channel: {0.channel} | User {0.author} : {0.content}".format(message))
         carta_aleatoria = deck.deckear()
-        await message.channel.send("{0.author} ".format(message)+carta_aleatoria)
+        respuesta = f"{message.author.mention}, tu carta es:\n{carta_aleatoria}"
+        if not carta_aleatoria:
+            respuesta = f"{message.author.mention} No quedan cartas en el mazo..."
+        else:
+            with open(f"{IMG_RUTE}{carta_aleatoria.lower()}.jpg", "rb") as file:
+                await message.channel.send(respuesta, file=discord.File(file))
 
     if message.content == '!descarte':
         carta_aleatoria = deck.discardDeck()
-        await message.channel.send("{0.author} ".format(message)+carta_aleatoria)
+        respuesta = f"{message.author.mention}, tu carta es:\n{carta_aleatoria}"
+        if not carta_aleatoria:
+            respuesta = f"{message.author.mention} No hay cartas descartadas..."
+            await message.channel.send(respuesta)
+        else:
+            with open(f"{IMG_RUTE}{carta_aleatoria.lower()}.jpg", "rb") as file:
+                await message.channel.send(respuesta, file=discord.File(file))
 
 bot.run(TOKEN)
